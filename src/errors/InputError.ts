@@ -1,8 +1,4 @@
-import { ValidationError } from 'class-validator';
-
-export function isInputError(error: Error): error is InputError {
-  return error.name === 'InputError';
-}
+import { ValidationError } from 'express-validator';
 
 class InputError extends Error {
   validationErrors: ValidationError[];

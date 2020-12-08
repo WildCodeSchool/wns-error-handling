@@ -1,0 +1,9 @@
+POST http://localhost:5000/api/wilders HTTP/1.1
+content-type: application/json
+
+{
+    "skills":[
+        {"title":"express", "votes":"u2"},
+        {"title":"m", "votes":12}
+    ]
+} 

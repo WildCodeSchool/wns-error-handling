@@ -1,19 +1,16 @@
-import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import InputError from '../errors/InputError';
 import WilderModel from '../models/Wilder';
-import CreateWilderModel from './CreateWilderModel';
 
 export default {
   create: async (req: Request, res: Response): Promise<void> => {
-    const inputWilder = plainToClass(CreateWilderModel, req.body);
-    const errors = await validate(inputWilder);
-    if (errors.length > 0) {
-      throw new InputError(errors);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new InputError(errors.array());
     }
     await WilderModel.init();
-    const wilder = new WilderModel(inputWilder);
+    const wilder = new WilderModel(req.body);
     const result = await wilder.save();
     res.json({ success: true, result });
   },

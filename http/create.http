@@ -5,7 +5,7 @@ content-type: application/json
     "name":"Http Wilder",
     "city": "Londres",
     "skills":[
-        {"title":"express"},
+        {"title":"express", "votes":12},
         {"title":"mongo", "votes":12}
     ]
 } 
