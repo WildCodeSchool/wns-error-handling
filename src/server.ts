@@ -37,27 +37,8 @@ app.get('*', () => {
   throw error;
 });
 
-interface MongoError extends Error {
-  code: number;
-}
-
-function isMongoError(error: Error): error is MongoError {
-  return error.name === 'MongoError';
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
-  if (isMongoError(error)) {
-    switch (error.code) {
-      case 11000:
-        res.status(400);
-        res.json({ success: false, message: 'The name is already used' });
-        break;
-      default:
-        res.status(400);
-        res.json({ success: false, message: 'An error occured' });
-    }
-  }
   if (error instanceof InputError) {
     return res.status(400).json({
       status: 400,
@@ -72,7 +53,12 @@ app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
     });
   }
 
-  res.status(500).json({ status: 500, errors: ['Something went wrong'] });
+  // eslint-disable-next-line no-console
+  console.error(error);
+
+  return res
+    .status(500)
+    .json({ status: 500, errors: ['Something went wrong'] });
 });
 
 // Start Server
