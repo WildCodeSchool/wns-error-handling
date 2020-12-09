@@ -1,10 +1,11 @@
 import CustomError from './CustomError';
 
 class NotFoundError extends CustomError {
-  // eslint-disable-next-line class-methods-use-this
+  status = 404;
+
   serializeError(): { status: number; errors: string[] } {
     return {
-      status: 404,
+      status: this.status,
       errors: ['Ressource not found'],
     };
   }

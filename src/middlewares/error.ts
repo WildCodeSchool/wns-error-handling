@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import InputError from '../errors/InputError';
-import NotFoundError from '../errors/NotFoundError';
-import BadRequestError from '../errors/BadRequestError';
+import CustomError from '../errors/CustomError';
 
 export default (
   error: Error,
@@ -10,16 +8,8 @@ export default (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
 ): Response => {
-  if (error instanceof InputError) {
-    return res.status(400).json(error.serializeError());
-  }
-
-  if (error instanceof BadRequestError) {
-    return res.status(400).json(error.serializeError());
-  }
-
-  if (error instanceof NotFoundError) {
-    return res.status(404).json(error.serializeError());
+  if (error instanceof CustomError) {
+    return res.status(error.status).json(error.serializeError());
   }
 
   // eslint-disable-next-line no-console
