@@ -4,6 +4,7 @@ import cors from 'cors';
 import wilderRouter from './routes/wilder';
 import InputError from './errors/InputError';
 import NotFoundError from './errors/NotFoundError';
+import BadRequestError from './errors/BadRequestError';
 
 const app = express();
 
@@ -43,6 +44,13 @@ app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
     return res.status(400).json({
       status: 400,
       errors: error.validationErrors.map(({ msg }) => msg),
+    });
+  }
+
+  if (error instanceof BadRequestError) {
+    return res.status(400).json({
+      status: 400,
+      errors: [error.message],
     });
   }
 
