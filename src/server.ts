@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import wilderRouter from './routes/wilder';
 import InputError from './errors/InputError';
+import NotFoundError from './errors/NotFoundError';
 
 const app = express();
 
@@ -31,9 +32,9 @@ app.get('/', (req, res) => {
 
 app.use(wilderRouter);
 
-app.get('*', (req, res) => {
-  res.status(404);
-  res.send({ success: false, message: 'Wrong adress' });
+app.get('*', () => {
+  const error = new NotFoundError();
+  throw error;
 });
 
 interface MongoError extends Error {
@@ -58,11 +59,20 @@ app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
     }
   }
   if (error instanceof InputError) {
-    res.status(400).json({
+    return res.status(400).json({
       status: 400,
       errors: error.validationErrors.map(({ msg }) => msg),
     });
   }
+
+  if (error instanceof NotFoundError) {
+    return res.status(404).json({
+      status: 404,
+      errors: ['Ressource not found'],
+    });
+  }
+
+  res.status(500).json({ status: 500, errors: ['Something went wrong'] });
 });
 
 // Start Server
