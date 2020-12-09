@@ -1,10 +1,9 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import wilderRouter from './routes/wilder';
-import InputError from './errors/InputError';
+import errorMiddleware from './middlewares/error';
 import NotFoundError from './errors/NotFoundError';
-import BadRequestError from './errors/BadRequestError';
 
 const app = express();
 
@@ -38,36 +37,7 @@ app.get('*', () => {
   throw error;
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
-  if (error instanceof InputError) {
-    return res.status(400).json({
-      status: 400,
-      errors: error.validationErrors.map(({ msg }) => msg),
-    });
-  }
-
-  if (error instanceof BadRequestError) {
-    return res.status(400).json({
-      status: 400,
-      errors: [error.message],
-    });
-  }
-
-  if (error instanceof NotFoundError) {
-    return res.status(404).json({
-      status: 404,
-      errors: ['Ressource not found'],
-    });
-  }
-
-  // eslint-disable-next-line no-console
-  console.error(error);
-
-  return res
-    .status(500)
-    .json({ status: 500, errors: ['Something went wrong'] });
-});
+app.use(errorMiddleware);
 
 // Start Server
 // eslint-disable-next-line no-console
