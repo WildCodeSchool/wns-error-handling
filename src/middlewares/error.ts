@@ -11,17 +11,11 @@ export default (
   _next: NextFunction
 ): Response => {
   if (error instanceof InputError) {
-    return res.status(400).json({
-      status: 400,
-      errors: error.validationErrors.map(({ msg }) => msg),
-    });
+    return res.status(400).json(error.serializeError());
   }
 
   if (error instanceof BadRequestError) {
-    return res.status(400).json({
-      status: 400,
-      errors: [error.message],
-    });
+    return res.status(400).json(error.serializeError());
   }
 
   if (error instanceof NotFoundError) {

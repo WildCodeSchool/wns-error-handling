@@ -1,4 +1,6 @@
-class NotFoundError extends Error {
+import CustomError from './CustomError';
+
+class NotFoundError extends CustomError {
   // eslint-disable-next-line class-methods-use-this
   serializeError(): { status: number; errors: string[] } {
     return {
