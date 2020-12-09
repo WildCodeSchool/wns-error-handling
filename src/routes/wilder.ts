@@ -38,6 +38,7 @@ router
   .route('/api/wilders')
   .post(
     [
+      body('name').notEmpty().withMessage('name must be provided'),
       body('name')
         .isLength({ min: 3 })
         .withMessage('name must be at least 3 characters long'),

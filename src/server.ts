@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import wilderRouter from './routes/wilder'
+import wilderRouter from './routes/wilder';
 import InputError from './errors/InputError';
 
 const app = express();
@@ -58,6 +58,7 @@ app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
     }
   }
   if (error instanceof InputError) {
+    console.log(error);
     res.json({ success: false, message: 'An input error occured', error });
   }
 });
