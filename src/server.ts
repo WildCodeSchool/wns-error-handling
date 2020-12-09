@@ -58,8 +58,10 @@ app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
     }
   }
   if (error instanceof InputError) {
-    console.log(error);
-    res.json({ success: false, message: 'An input error occured', error });
+    res.status(400).json({
+      status: 400,
+      errors: error.validationErrors.map(({ msg }) => msg),
+    });
   }
 });
 
