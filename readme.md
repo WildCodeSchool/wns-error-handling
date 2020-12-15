@@ -1,24 +1,18 @@
-# Add Typescript to a REST api with NodeJs / Express / Mongo
+# Handle errors in a Rest api express / Typescript
 
 ## Steps
 
-### Setup
+### Improving validation and structure
 
-- project structure
-- tsconfig
-- install packages and write package.json
-- Adding Express types
-- eslint configuration
-- lint and fix
-- eslint ignore files
+- usage of express-validator
+- usage of routes
 
-### Converting js to ts
+### Handling the errors
 
-- fix import
-- typing the controller
-- typing the model
-- type guard for mongo error
-
-### Handling request errors
-
-- raising error on create
+- return a list of error messages
+- create NotFoundError
+- log unknown errors
+- create BadRequestError
+- create an error middleware
+- use an abstract class CustomError
+- simplify error middleware
