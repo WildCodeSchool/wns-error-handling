@@ -23,7 +23,7 @@ const controller = {
     }
     const wilder = new WilderModel(req.body);
     const result = await wilder.save();
-    res.json({ success: true, result });
+    res.status(201).json({ success: true, result });
   },
   read: async (req: Request, res: Response): Promise<void> => {
     const result = await WilderModel.find();
